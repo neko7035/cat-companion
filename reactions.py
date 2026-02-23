@@ -50,7 +50,7 @@ def react(state, cmd, payload=None):
         hour = now.hour if now.hour > 0 else 24
         minute = now.minute
 
-        stems = ["now", "is", str(hour), "hour"]
+        stems = ["now", str(hour), "hour"]
         minute_stems = _minute_stems(minute)
         if minute_stems:
             stems.extend(minute_stems)
