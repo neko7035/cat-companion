@@ -33,7 +33,8 @@ def react(state, cmd, payload=None):
     elif cmd == "time":
         now = datetime.now()
         hour = now.hour if now.hour > 0 else 24
-        play_sound_sequence(["now", "is", str(hour), "hour"])
+        minute = now.minute
+        play_sound_sequence(["now", "is", str(hour), "hour", str(minute), "minute"])
 
     elif cmd == "status":
         speak(f"我的心情 {state.mood}，信任 {state.trust}，睡眠 {state.sleep_score}")
