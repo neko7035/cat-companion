@@ -11,24 +11,21 @@ def speak(text):
 def react(state, cmd, payload=None):
 
     if cmd == "pet":
-        state.mood += 5
-        state.trust += 2
+        state.apply_interaction(mood_delta=5, trust_delta=2, sleep_cost=1)
         play_sound("happy.wav")
         speak("哼……也不是不可以。")
 
     elif cmd == "feed":
-        state.mood += 8
+        state.apply_interaction(mood_delta=8, trust_delta=1, sleep_cost=1)
         play_sound("time/Mew.wav")
         speak("算你识相。")
 
     elif cmd == "play":
-        state.mood += 10
-        state.sleep_score -= 5
+        state.apply_interaction(mood_delta=10, trust_delta=3, sleep_cost=5)
         speak("快点快点！")
 
     elif cmd == "scold":
-        state.mood -= 10
-        state.trust -= 5
+        state.apply_interaction(mood_delta=-10, trust_delta=-5, sleep_cost=1)
         speak("你凶什么凶！")
 
     elif cmd == "time":
@@ -43,6 +40,6 @@ def react(state, cmd, payload=None):
     elif cmd == "random":
         if random.random() < 0.2:
             speak("哼，我才没有想你。")
-            state.mood += 2
+            state.apply_interaction(mood_delta=2)
 
     return True
