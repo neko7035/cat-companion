@@ -18,6 +18,7 @@ def react(state, cmd, payload=None):
 
     elif cmd == "feed":
         state.mood += 8
+        play_sound("time/Mew.wav")
         speak("算你识相。")
 
     elif cmd == "play":
