@@ -1,66 +1,57 @@
-from datetime import datetime
 from rich.console import Console
 from rich.table import Table
+from datetime import datetime
 
-from .storage import load_state, save_state
+from state import CatState
+from storage import load_state, save_state
+from reactions import react
+from voice import listen_text, parse_to_event
 
 console = Console()
 
-def render(state) -> None:
-    table = Table(title="CatCompanion v0.2 (Time System)")
+def render(state: CatState):
+    table = Table(title="CatCompanion 1.0")
+
     table.add_column("Item", style="bold")
     table.add_column("Value")
 
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    table.add_row("Time", now)
+    table.add_row("Time", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     table.add_row("Face", state.face())
     table.add_row("Mood", str(state.mood))
     table.add_row("Trust", str(state.trust))
-    table.add_row("SleepScore", str(state.sleep_score))
-    table.add_row("LastInteraction", state.last_interaction or "-")
+    table.add_row("Sleep", str(state.sleep_score))
 
     console.clear()
     console.print(table)
-    console.print("Commands: mood+ | mood- | trust+ | sleep- | sleep+ | quit")
+    console.print("Commands: pet | feed | play | scold | time | status | voice | quit")
 
-
-def main() -> None:
+def main():
     state = load_state()
-
-    # 新增：启动时根据时间更新
     state.update_by_time()
-
     render(state)
 
     while True:
         cmd = console.input(">>> ").strip().lower()
 
         if cmd == "quit":
-            # 🔥 退出时记录当前时间
-            state.last_interaction = datetime.now().isoformat()
             save_state(state)
             break
 
-        state.last_interaction = datetime.now().isoformat()
+        elif cmd == "voice":
+            text = listen_text()
+            parsed = parse_to_event(text)
+            if parsed:
+                ev, payload = parsed
+                react(state, ev, payload)
+            else:
+                console.print("没识别到有效唤醒词或命令")
 
-        if cmd == "mood+":
-            state.mood += 5
-        elif cmd == "mood-":
-            state.mood -= 5
-        elif cmd == "trust+":
-            state.trust += 3
-        elif cmd == "sleep-":
-            state.sleep_score -= 10
-        elif cmd == "sleep+":
-            state.sleep_score += 10
         else:
-            console.print("Unknown command.")
-        
-        state.random_event()
+            react(state, cmd)
+
         state.clamp()
         save_state(state)
         render(state)
-
 
 if __name__ == "__main__":
     main()

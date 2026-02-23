@@ -1,18 +1,20 @@
 import json
 from pathlib import Path
-from .state import CatState
+from state import CatState
+from datetime import datetime
 
 STATE_PATH = Path.home() / ".catcompanion_state.json"
 
 def load_state() -> CatState:
     if not STATE_PATH.exists():
         return CatState()
-    data = json.loads(STATE_PATH.read_text(encoding="utf-8"))
+
+    with open(STATE_PATH, "r") as f:
+        data = json.load(f)
+
     return CatState(**data)
 
-def save_state(state: CatState) -> None:
-    state.clamp()
-    STATE_PATH.write_text(
-        json.dumps(state.__dict__, ensure_ascii=False, indent=2),
-        encoding="utf-8"
-    )
+def save_state(state: CatState):
+    state.last_interaction = datetime.now().isoformat()
+    with open(STATE_PATH, "w") as f:
+        json.dump(state.__dict__, f)
