@@ -1,6 +1,6 @@
 import random
 from datetime import datetime
-from audio import play_sound
+from audio import play_sound, play_sound_sequence
 import subprocess
 
 PERSONALITY = "tsundere"
@@ -31,8 +31,9 @@ def react(state, cmd, payload=None):
         speak("你凶什么凶！")
 
     elif cmd == "time":
-        now = datetime.now().strftime("%H点%M分")
-        speak(f"现在是 {now}")
+        now = datetime.now()
+        hour = now.hour if now.hour > 0 else 24
+        play_sound_sequence(["now", "is", str(hour), "hour"])
 
     elif cmd == "status":
         speak(f"我的心情 {state.mood}，信任 {state.trust}，睡眠 {state.sleep_score}")
