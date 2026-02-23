@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+*.pyc
+.catcompanion_state.json
+.DS_Store
