@@ -35,9 +35,9 @@ All values are automatically clamped within valid ranges.
 ### 2️⃣ Time-Based System | 时间系统
 
 - Records last interaction time  
-- 长时间未互动会降低 trust  
-- Sleep recovers over time  
-- 连续登录会获得信任奖励  
+- 长时间未互动会逐步降低 mood / trust  
+- Frequent interaction raises mood / trust while consuming a little sleep  
+- Sleeping for ~8 hours restores sleep to full  
 
 The system reacts based on real-world time difference.  
 系统会根据现实时间差做出变化。
@@ -47,11 +47,13 @@ The system reacts based on real-world time difference.
 ### 3️⃣ Interactive Commands | 交互命令
 
 Available commands:
-mood+
-mood-
-trust+
-sleep+
-sleep-
+pet
+feed
+play
+scold
+time
+status
+voice
 quit
 
 Users can modify the cat's state through these commands.  
@@ -96,7 +98,7 @@ Random events may trigger after user interaction.
 ## 🎮 How to Run | 运行方式
 
 Activate virtual environment:
-soure .venv/bin/activate
+source .venv/bin/activate
 
 Run the program:
 python -m catcompanion.main
