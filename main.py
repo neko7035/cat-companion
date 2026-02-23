@@ -6,6 +6,7 @@ from state import CatState
 from storage import load_state, save_state
 from reactions import react
 from voice import listen_text, parse_to_event
+from reminder import start_daily_cat_reminder
 
 console = Console()
 
@@ -26,6 +27,8 @@ def render(state: CatState):
     console.print("Commands: pet | feed | play | scold | time | status | voice | quit")
 
 def main():
+    start_daily_cat_reminder()
+
     state = load_state()
     state.update_by_time()
     render(state)

@@ -109,3 +109,18 @@ python -m catcompanion.main
 
 To build an evolving, emotionally responsive digital companion system.  
 构建一个会成长、会变化、具有情绪反馈的数字陪伴系统。
+
+## 🧪 Reminder Testing | 定时提醒测试
+
+1. 安装依赖（若尚未安装）：
+   ```bash
+   pip install schedule
+   ```
+2. 运行自动化测试：
+   ```bash
+   python -m unittest tests/test_reminder.py
+   ```
+3. 手动联调（真实播报）：
+   - 运行主程序：`python main.py`
+   - 将 `reminder.py` 里的提醒时间临时改成“当前时间 + 1 分钟”做快速验证。
+   - 到点后应自动调用现有 TTS（`reactions.speak`）进行播报。
